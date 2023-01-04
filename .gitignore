@@ -7,6 +7,7 @@ __pycache__/
 *.so
 
 # Distribution / packaging
+work_dirs/
 data/
 cache/
 .Python
@@ -36,6 +37,7 @@ MANIFEST
 *.spec
 
 # Installer logs
+nohup.out
 pip-log.txt
 pip-delete-this-directory.txt
 

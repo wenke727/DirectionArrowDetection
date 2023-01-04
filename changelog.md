@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] 2023-1-4
+- 使用 faster-rcnn 完成训练和推理
+
+## [0.0.2] 2021-12-16
+- preprocess.mmcv_browse_dataset
+  - 使用 mmcv 框架的内容对标注数据进行可视化
+- src.train.py
+  - Add deep-learning train interface(base code: mmdetection)
+
 ## [0.0.1] 2021-12-16
 
 - preprocess.make_list
