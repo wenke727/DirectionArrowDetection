@@ -19,13 +19,14 @@ num_classes = 11
 data = dict(
     samples_per_gpu=8,
     workers_per_gpu=4,
+
     train=dict(
         type='RepeatDataset',
         times=3,
         dataset=dict(
             type='CocoDataset',
-            ann_file='data/Arrows_Nanshan/arrows_singles-coco.json',
-            img_prefix='',
+            ann_file='data/Arrows/arrows_train.json',
+            img_prefix='data/Arrows/train',
             classes=classes,
             pipeline=[
                 dict(type='LoadImageFromFile'),
@@ -51,10 +52,11 @@ data = dict(
                     type='Collect',
                     keys=['img', 'gt_bboxes', 'gt_labels'])
             ])),
+
     val=dict(
         type='CocoDataset',
-        ann_file='data/Arrows_Nanshan/arrows_singles-coco.json',
-        img_prefix='',
+        ann_file='data/Arrows/arrows_test.json',
+        img_prefix='data/Arrows/test',
         classes=classes,
         pipeline=[
             dict(type='LoadImageFromFile'),
@@ -75,30 +77,8 @@ data = dict(
                     dict(type='Collect', keys=['img'])
                 ])
         ]),
-    test=dict(
-        type='CocoDataset',
-        ann_file='data/Arrows_Nanshan/arrows_singles-coco.json',
-        img_prefix='',
-        classes=classes,
-        pipeline=[
-            dict(type='LoadImageFromFile'),
-            dict(
-                type='MultiScaleFlipAug',
-                img_scale=(1333, 800),
-                flip=False,
-                transforms=[
-                    dict(type='Resize', keep_ratio=True),
-                    dict(type='RandomFlip'),
-                    dict(
-                        type='Normalize',
-                        mean=[123.675, 116.28, 103.53],
-                        std=[58.395, 57.12, 57.375],
-                        to_rgb=True),
-                    dict(type='Pad', size_divisor=32),
-                    dict(type='ImageToTensor', keys=['img']),
-                    dict(type='Collect', keys=['img'])
-                ])
-        ]))
+
+)
 
 
 model = dict(
@@ -208,3 +188,13 @@ model = dict(
         # soft-nms is also supported for rcnn testing
         # e.g., nms=dict(type='soft_nms', iou_threshold=0.5, min_score=0.05)
     ))
+
+workflow = [('train', 1), ('val', 1)] 
+
+runner = dict(
+    type='EpochBasedRunner', 
+    max_epochs=36) 
+
+evaluation = dict(  # evaluation hook 的配置，更多细节请参考 https://github.com/open-mmlab/mmdetection/blob/master/mmdet/core/evaluation/eval_hooks.py#L7。
+    interval=1,  # 验证的间隔。
+    metric=['bbox'])  # 验证期间使用的指标。

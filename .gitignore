@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 work_dirs/
+results/
 data/
 cache/
 .Python
